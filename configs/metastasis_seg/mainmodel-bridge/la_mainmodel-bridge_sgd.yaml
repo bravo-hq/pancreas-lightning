@@ -1,4 +1,5 @@
 is3d: true
+find_lr: true
 checkpoints:
   continue_training: false
   test_mode: false
