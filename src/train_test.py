@@ -74,6 +74,8 @@ def configure_trainer(config, logger):
         monitor="val_loss", min_delta=0.0001, patience=25, verbose=True, mode="min"
     )
     lr_monitor = LearningRateMonitor(logging_interval="epoch")
+    
+    every_n_epochs = config["val_check_interval"].get("every_n_epochs", 1)
     return Trainer(
         logger=logger,
         # callbacks=[checkpoint_callback, early_stop_callback],
@@ -81,6 +83,7 @@ def configure_trainer(config, logger):
         max_epochs=config["training"]["epochs"],
         accelerator="gpu",
         devices=1,
+        val_check_interval=every_n_epochs,
     )
 
 
