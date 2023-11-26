@@ -83,7 +83,7 @@ def configure_trainer(config, logger):
         max_epochs=config["training"]["epochs"],
         accelerator="gpu",
         devices=1,
-        val_check_interval=every_n_epochs,
+        check_val_every_n_epoch=every_n_epochs,
     )
 
 
