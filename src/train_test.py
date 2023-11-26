@@ -94,7 +94,7 @@ def get_platform():
 def get_input_size_and_module(config):
     summary_input_size = (
         config["data_loader"]["train"]["batch_size"],
-        4,
+        1,
         config["dataset"]["crop_size"][2],
         config["dataset"]["crop_size"][0],
         config["dataset"]["crop_size"][1],
