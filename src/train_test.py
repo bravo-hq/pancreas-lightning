@@ -75,7 +75,7 @@ def configure_trainer(config, logger):
     )
     lr_monitor = LearningRateMonitor(logging_interval="epoch")
     
-    every_n_epochs = config["val_check_interval"].get("every_n_epochs", 1)
+    every_n_epochs = config.get("val_check_interval", 1)
     return Trainer(
         logger=logger,
         # callbacks=[checkpoint_callback, early_stop_callback],
