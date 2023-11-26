@@ -45,7 +45,7 @@ class LAHeart(Dataset):
             [
                 T.SpatialPadd(
                     keys=["image", "label"],
-                    crop_size=crop_size,
+                    spatial_size=crop_size,
                     constant_values=0,
                     mode="constant",
                 ),
