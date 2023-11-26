@@ -34,7 +34,7 @@ def create_LA_dataset_fast(config: dict, mode: str):
     )
 
 
-def LA_heart_loader(config, verbose: bool = True) -> dict:
+def la_heart_loader(config, verbose: bool = True) -> dict:
     # train_list, val_list = split_dataset(
     #     config["path_to_data"], float(config["test_p"])
     # )

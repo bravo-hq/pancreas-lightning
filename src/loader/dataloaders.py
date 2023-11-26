@@ -1,4 +1,4 @@
-from .la_heart import LA_heart_loader
+from .la_heart import la_heart_loader
 
 
 def get_dataloaders(config, mode_or_modes):
