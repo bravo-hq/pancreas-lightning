@@ -41,8 +41,16 @@ class LAHeart(Dataset):
 
         self.image_list = [item.replace("\n", "") for item in self.image_list]
         self.data_type = data_type  # LA or pancreas
-        self.random_crop = T.RandSpatialCropd(
-            keys=["image", "label"], roi_size=crop_size
+        self.random_crop = T.Compose(
+            [
+                T.SpatialPadd(
+                    keys=["image", "label"],
+                    crop_size=crop_size,
+                    constant_values=0,
+                    mode="constant",
+                ),
+                T.RandSpatialCropd(keys=["image", "label"], roi_size=crop_size),
+            ]
         )
 
         print("total {} unlabel_samples".format(len(self.image_list)))

@@ -192,7 +192,6 @@ class SemanticSegmentation3D(pl.LightningModule):
         gts: torch.Tensor,
     ) -> dict:
         loss = self._cal_global_loss(preds, gts)
-
         return loss
 
     def _cal_loss_weights(self, preds: list | tuple) -> list:
