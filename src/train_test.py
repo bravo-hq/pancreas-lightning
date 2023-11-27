@@ -59,7 +59,7 @@ def configure_logger(config, parent_dir):
         )
     else:
         path = os.path.join(parent_dir, "tb_logs")
-    return TensorBoardLogger(path, name=config["model"]["name"])
+    return TensorBoardLogger(path, name=f"{config['model']['name']}_fold{config['fold']}")
 
 
 def configure_trainer(config, logger):

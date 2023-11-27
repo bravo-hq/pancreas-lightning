@@ -1,5 +1,5 @@
 is3d: true
-find_lr: true
+find_lr: fasle
 checkpoints:
   continue_training: false
   test_mode: false
@@ -41,13 +41,13 @@ training:
     name: 'SGD'
     params:
       lr: 0.01
-      momentum: 0.99
+      momentum: 0.9
       weight_decay : 0.00003
       # nesterov: true
   criterion:
     params: 
-      dice_weight: 0.5
-      bce_weight: 0.5
+      dice_weight: 1.0
+      bce_weight: 1.0
   scheduler:
     name: 'CustomDecayLR'
     params:
@@ -55,7 +55,7 @@ training:
   epochs: 300
   
 model: 
-  name: 'MainModel-bridge_SGD_afshin_nnnn_batch_2'
+  name: 'MainModel-bridge_SGD_afshin_nnnn_batch_2_all'
   params:
     spatial_shapes: [96, 96, 96]
     in_channels: 1

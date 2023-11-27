@@ -1,5 +1,5 @@
 is3d: true
-find_lr: true
+find_lr: false
 checkpoints:
   continue_training: false
   test_mode: false
@@ -39,21 +39,21 @@ training:
     name: 'SGD'
     params:
       lr: 0.01
-      momentum: 0.99
+      momentum: 0.9
       weight_decay : 0.00003
       nesterov: true
   criterion:
     params: 
-      dice_weight: 0.5
-      bce_weight: 0.5
+      dice_weight: 1.0
+      bce_weight: 1.0
   scheduler:
     name: 'CustomDecayLR'
     params:
-      max_epochs: 1000
-  epochs: 1000
+      max_epochs: 300
+  epochs: 300
   
 model: 
-  name: 'MainModel-bridge_SGD_afshin_dnnn'
+  name: 'MainModel-bridge_SGD_afshin_nnnn_all'
   params:
     spatial_shapes: [96, 96, 96]
     in_channels: 1
@@ -74,7 +74,7 @@ model:
     hyb_tf_repeats: [1,1,1]
     hyb_tf_num_heads: [2,4,8]
     hyb_tf_dropouts: 0.15
-    cnn_deforms: [true, true]
+    cnn_deforms: [false, false]
     hyb_use_cnn: [true,true,true]
     hyb_deforms: [false,false,false]
 
@@ -105,5 +105,5 @@ model:
 
 use_sliding_window: true
 sliding_window_params:
-  overlap: 0.75
+  overlap: 0.85
   mode: 'gaussian'
