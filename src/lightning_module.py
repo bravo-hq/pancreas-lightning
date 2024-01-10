@@ -12,6 +12,7 @@ from optimizers import *
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from typing import Union, Tuple, Dict
 from medpy import metric
+import torchmetrics
 
 
 class SemanticSegmentation3D(pl.LightningModule):
@@ -58,7 +59,8 @@ class SemanticSegmentation3D(pl.LightningModule):
             roi_size = [roi_size[2], roi_size[0], roi_size[1]]
             self.slider = SlidingWindowInferer(
                 roi_size=roi_size,
-                sw_batch_size=config["data_loader"]["train"]["batch_size"],
+                # sw_batch_size=config["data_loader"]["train"]["batch_size"],
+                sw_batch_size=20,
                 **config["sliding_window_params"],
             )
         else:
@@ -85,8 +87,10 @@ class SemanticSegmentation3D(pl.LightningModule):
             return
         for type_ in self.metric_types:
             metric = np.mean(self.metrics[stage][type_])
+            # metric = torch.stack(self.metrics[stage][type_], dim=0).mean()
             self.log(f"{self.modes_dict[stage]}_{type_}", metric)
             self.metrics[stage][type_] = []
+
         # for type_ in ["wt", "tc", "et"]:
         #     metric = self.metrics[stage][type_].compute()
         #     self.log_dict({f"{k}": v for k, v in metric.items()})
@@ -229,18 +233,30 @@ class SemanticSegmentation3D(pl.LightningModule):
         preds = preds.permute(0, 1, 3, 4, 2).cpu().numpy()
         preds = np.argmax(preds, axis=1)
         gts = gts.permute(0, 1, 3, 4, 2).squeeze(1).cpu().numpy()
+        # preds = preds.permute(0, 1, 3, 4, 2)
+        # preds = torch.argmax(preds, axis=1)
+        # gts = gts.permute(0, 1, 3, 4, 2).squeeze(1)
         for i in range(preds.shape[0]):
-            metrics = self._cal_metrics_per_subject(preds[i], gts[i])
+            metrics = self._cal_metrics_per_subject(preds[i], gts[i], stage)
             for metric, type in zip(metrics, self.metric_types):
                 self.metrics[stage][type].append(metric)
 
-    def _cal_metrics_per_subject(self, pred: np.ndarray, gt: np.ndarray) -> None:
+    def _cal_metrics_per_subject(self, pred, gt, stage: str) -> None:
+        # print(pred.shape, gt.shape)
+        # print(f"pred type: {pred.dtype}, gt type: {gt.dtype}")
         dice = metric.binary.dc(pred, gt)
         jc = metric.binary.jc(pred, gt)
-        hd = metric.binary.hd95(pred, gt)
-        asd = metric.binary.asd(pred, gt)
+        if np.count_nonzero(pred) == 0:
+            hd = 0.0
+            asd = 0.0
+        else:
+            hd = metric.binary.hd95(pred, gt)
+            asd = metric.binary.asd(pred, gt)
 
+        # dice= torchmetrics.functional.dice(pred,gt,multiclass=False)
+        # return [dice, 0.0, 0.0, 0.0]
         return [dice, jc, hd, asd]
+        # return[dice, torch.tensor(0., device=self.device), torch.tensor(0.,device=self.device), torch.tensor(0., device=self.device)]
 
     def _cal_loss_for_supervision(
         self,

@@ -1,5 +1,5 @@
 is3d: true
-find_lr: fasle
+find_lr: false
 checkpoints:
   continue_training: false
   test_mode: false
@@ -10,11 +10,12 @@ checkpoints:
 dataset:
   name: "LA_heart_loader"
   crop_size: [96,96,96]
-  path_to_data: "/cabinet/dataset/pancreas"
+  # path_to_data: "/home/say26747/Desktop/datasets/pancreas"
+  path_to_data: "/cabinet/yousef/pancreas"
 
 datatype: 'Pancreas'
 
-val_check_interval: 1
+val_check_interval: 10
 
 data_loader:
   train: 
