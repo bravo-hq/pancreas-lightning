@@ -85,12 +85,3 @@ class LAHeart(Dataset):
             torch.as_tensor(sample["label"]).permute(0, 3, 1, 2).type(torch.long)
         )
         return sample
-
-        # if self.common_transform:
-        #     sample = self.common_transform(sample)
-        # if self.sp_transform:
-        #     sample1 = self.sp_transform(sample)
-        #     sample2 = self.sp_transform(sample)
-        #     return [sample1, sample2]
-        # else:
-        #     return sample
