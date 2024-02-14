@@ -52,13 +52,13 @@ def get_base_directory():
 
 
 def configure_logger(config, parent_dir):
-    # if config["LRZ_node"]:
-    #     path = os.path.join(
-    #         f"/cabinet/yousef/{config['datatype']}-lightining",
-    #         "tb_logs",
-    #     )
-    # else:
-    path = os.path.join(parent_dir, "tb_logs")
+    if config["LRZ_node"]:
+        path = os.path.join(
+            f"/cabinet/yousef/{config['datatype']}-lightining",
+            "tb_logs",
+        )
+    else:
+        path = os.path.join(parent_dir, "tb_logs")
     return TensorBoardLogger(
         path, name=f"{config['model']['name']}_fold{config['fold']}"
     )

@@ -52,8 +52,8 @@ training:
   scheduler:
     name: 'CustomDecayLR'
     params:
-      max_epochs: 300
-  epochs: 300
+      max_epochs: 400
+  epochs: 400
   
 model: 
   name: 'lhUNET_SGD_PANCREAS_FINAL'
