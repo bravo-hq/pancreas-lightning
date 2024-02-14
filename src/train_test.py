@@ -52,14 +52,16 @@ def get_base_directory():
 
 
 def configure_logger(config, parent_dir):
-    if config["LRZ_node"]:
-        path = os.path.join(
-            f"/cabinet/yousef/{config['datatype']}-lightining",
-            "tb_logs",
-        )
-    else:
-        path = os.path.join(parent_dir, "tb_logs")
-    return TensorBoardLogger(path, name=f"{config['model']['name']}_fold{config['fold']}")
+    # if config["LRZ_node"]:
+    #     path = os.path.join(
+    #         f"/cabinet/yousef/{config['datatype']}-lightining",
+    #         "tb_logs",
+    #     )
+    # else:
+    path = os.path.join(parent_dir, "tb_logs")
+    return TensorBoardLogger(
+        path, name=f"{config['model']['name']}_fold{config['fold']}"
+    )
 
 
 def configure_trainer(config, logger):
@@ -74,7 +76,7 @@ def configure_trainer(config, logger):
         monitor="val_loss", min_delta=0.0001, patience=25, verbose=True, mode="min"
     )
     lr_monitor = LearningRateMonitor(logging_interval="epoch")
-    
+
     every_n_epochs = config.get("val_check_interval", 1)
     return Trainer(
         logger=logger,

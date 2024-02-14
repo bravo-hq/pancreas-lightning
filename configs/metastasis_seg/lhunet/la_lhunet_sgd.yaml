@@ -10,7 +10,7 @@ checkpoints:
 dataset:
   name: "LA_heart_loader"
   crop_size: [96,96,96]
-  path_to_data: "/home/say26747/Desktop/datasets/Left Atrial"
+  path_to_data: "/cabinet/dataset/Left Atrial"
 
 datatype: 'LA'
 
@@ -20,19 +20,19 @@ data_loader:
   train: 
     batch_size: 2
     shuffle: true
-    num_workers: 12
+    num_workers: 14
     pin_memory: true
     persistent_workers: true
   validation: 
     batch_size: 1
     shuffle: false
-    num_workers: 12
+    num_workers: 14
     pin_memory: true
     persistent_workers: true
   test:
     batch_size: 1
     shuffle: false
-    num_workers: 12
+    num_workers: 14
     pin_memory: false
     persistent_workers: true
 
@@ -55,7 +55,7 @@ training:
   epochs: 300
   
 model: 
-  name: 'lhUNET_SGD_LA_V7_cat_res_sum_coll_XXL'
+  name: 'lhUNET_SGD_LA_FINAL'
   params: # the class arguments defined above
     spatial_shapes: [96, 96, 96]
     do_ds: false # Deep Supervision
@@ -63,23 +63,23 @@ model:
     out_channels: 2
         
       # encoder params
-    cnn_kernel_sizes: [5,3]
-    cnn_features: [16,32]
+    cnn_kernel_sizes: [3,3]
+    cnn_features: [12,16]
     cnn_strides: [2,2]
-    cnn_maxpools: [false, true]
+    cnn_maxpools: [true, true]
     cnn_dropouts: 0.0
     cnn_blocks: nn # n: resunet, d: deformconv, b: basicunet
     hyb_kernel_sizes: [3,3, 3]
-    hyb_features: [32, 64,128]
+    hyb_features: [32, 64, 128]
     hyb_strides: [2,2,2]
     hyb_maxpools: [true,true, True]
     hyb_cnn_dropouts: 0.0
-    hyb_tf_proj_sizes: [32,64,128]
+    hyb_tf_proj_sizes: [64,32,0]
     hyb_tf_repeats: [1,1,1]
     hyb_tf_num_heads: [4,4,4]
-    hyb_tf_dropouts: 0.0
+    hyb_tf_dropouts: 0.1
     hyb_cnn_blocks: nnn # n: resunet, d: deformconv, b: basicunet
-    hyb_vit_blocks: XXL # s: dlka_special_v2, S: dlka_sp_seq, c: dlka_channel_v2, C: dlka_ch_seq
+    hyb_vit_blocks: SSC # s: dlka_special_v2, S: dlka_sp_seq, c: dlka_channel_v2, C: dlka_ch_seq
     # hyb_vit_sandwich: false
     hyb_skip_mode: "cat" # "sum" or "cat"
     hyb_arch_mode: "residual" # sequential, residual, parallel, collective
